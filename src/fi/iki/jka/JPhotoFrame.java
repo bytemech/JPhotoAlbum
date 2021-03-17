@@ -65,6 +65,7 @@ public class JPhotoFrame extends JFrame
     protected JPhotoExifDialog exifDialog = null;
     protected JFrame helpFrame = null;
     protected File photoDirectory = null;
+    public JPhotoShow show;
     
     protected static HashMap allFrames = new HashMap();
     
@@ -551,6 +552,10 @@ public class JPhotoFrame extends JFrame
             setSlideShowVisible();
 
         }
+        else if (cmd.equals(JPhotoMenu.A_FASTER_SLIDESHOW)) {
+            setFasterSlideShowVisible();
+
+        }
         else if (cmd.equals(JPhotoMenu.A_HELP)) {
             displayHelp();
         }
@@ -589,13 +594,26 @@ public class JPhotoFrame extends JFrame
     }
 
     public void setSlideShowVisible() {
+        //If photos, then create show and call show.setvisible
         if (photos.getSize()>0) {
-            JPhotoShow show = new JPhotoShow(photos, 5000, list);
-            show.setVisible(true);
+            this.show = new JPhotoShow(photos, 5000, list);
+            this.show.setVisible(true);
         }
         else
+            //If no photos, show message dialog
             JOptionPane.showMessageDialog(this, "No photos to show!",
                                           APP_NAME, JOptionPane.ERROR_MESSAGE);
+    }
+    public void setFasterSlideShowVisible() {
+        //If photos, then create show and call show.setvisible
+        if (photos.getSize()>0) {
+            this.show = new JPhotoShow(photos, 1000, list);
+            this.show.setVisible(true);
+        }
+        else
+            //If no photos, show message dialog
+            JOptionPane.showMessageDialog(this, "No photos to show!",
+                    APP_NAME, JOptionPane.ERROR_MESSAGE);
     }
 
     public void insertPhotos(String files[]) {
@@ -885,8 +903,8 @@ public class JPhotoFrame extends JFrame
                 }
             }
             else {
-                JPhotoShow show = new JPhotoShow(photos, 0, list);
-                show.setVisible(true);
+                this.show = new JPhotoShow(photos, 0, list);
+                this.show.setVisible(true);
             }
         }
         else
